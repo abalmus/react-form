@@ -1,0 +1,75 @@
+{
+    "name": "@tacitknowledge/react-form",
+    "version": "1.0.0",
+    "description": "From - Reusable React component, which includes fast and modern Validation Processor and a set of form fields.",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "scripts": {
+        "prepublish": "npm run test && tsc",
+        "styleguide": "./node_modules/react-styleguidist/bin/styleguidist.js build",
+        "test": "NODE_ENV=development nyc ./node_modules/mocha/bin/mocha -r ts-node/register src/__tests__/**/*.{js,jsx,ts,tsx}"
+    },
+    "author": "Andrei Balmus <abalmush@gmail.com> (http://abalmus.com)",
+    "license": "MIT",
+    "dependencies": {
+        "@tacitknowledge/react-utils": "^1.0.3",
+        "@tacitknowledge/validator": "^1.2.5",
+        "@types/react": "^16.0.31",
+        "@types/react-dom": "^16.0.3",
+        "lodash": "^4.17.4",
+        "prop-types": "^15.6.0",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
+        "typescript": "^2.8.3"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.0.10",
+        "@types/es6-promise": "0.0.33",
+        "@types/mocha": "^2.2.45",
+        "babel": "^6.23.0",
+        "babel-core": "^6.26.0",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-react-app": "^3.1.0",
+        "chai": "^4.1.2",
+        "chai-react-element": "^1.0.6",
+        "chai-shallowly": "^1.0.0",
+        "enzyme": "^3.3.0",
+        "enzyme-adapter-react-16": "^1.1.1",
+        "mocha": "^4.1.0",
+        "nyc": "^11.4.1",
+        "react-docgen-typescript": "^1.5.0",
+        "react-styleguidist": "^7.0.14",
+        "sinon": "^4.1.6",
+        "source-map-support": "^0.5.0",
+        "ts-loader": "^4.3.0",
+        "ts-node": "^4.1.0",
+        "typings": "^2.1.1",
+        "webpack": "^4.8.3",
+        "webpack-cli": "^2.1.3"
+    },
+    "directories": {
+        "lib": "lib"
+    },
+    "nyc": {
+        "include": [
+            "src/**/*.ts",
+            "src/**/*.tsx",
+            "src/**/*.js"
+        ],
+        "extension": [
+            ".js",
+            ".ts",
+            ".tsx"
+        ],
+        "require": [
+            "babel-core/register",
+            "ts-node/register"
+        ],
+        "reporter": [
+            "text-summary",
+            "html"
+        ],
+        "sourceMap": true,
+        "instrument": true
+    }
+}

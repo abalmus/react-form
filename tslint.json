@@ -1,0 +1,38 @@
+{
+  "extends": [
+    "tslint:latest"
+  ],
+  "rules": {
+    "arrow-parens": false,
+    "interface-name": [
+      false
+    ],
+    "max-line-length": [
+      500
+    ],
+    "member-access": [
+      false
+    ],
+    "no-conditional-assignment": false,
+    "no-namespace": [
+      false
+    ],
+    "no-unused-variable": [
+      true,
+      "react"
+    ],
+    "one-line": [
+      true,
+      "check-open-brace",
+      "check-whitespace"
+    ],
+    "ordered-imports": [
+      false
+    ],
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ]
+  }
+}
