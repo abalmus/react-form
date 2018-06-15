@@ -5,10 +5,10 @@ Reusable React component, which includes fast and modern Validation Processor an
 
 ```javascript
 // NPM
-npm install @abalmush/react
+npm install @tacitknowledge/react-form
 
 // YARN
-yarn add @abalmush/react
+yarn add @tacitknowledge/react-form
 ```
 
 # Usage
@@ -16,7 +16,7 @@ yarn add @abalmush/react
 ### Working with Form component
 
 ```javascript
-import { Form } from '@abalmush/react';
+import { Form } from '@tacitknowledge/react-form';
 
 const constrains = {
     rules: {
