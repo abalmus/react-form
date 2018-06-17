@@ -6,9 +6,16 @@ import { ValidationProcessor  } from '@tacitknowledge/validator';
 import { ValidationDecorator } from './ValidationDecorator';
 import { Children } from '@tacitknowledge/react-utils';
 
-function formSubmit(options: object) {
-    // will be in request library
-    console.log(options);
+interface submitHandler {
+    (options: object): Promise<any>;
+}
+
+interface submitSuccess {
+    (options: object): any;
+}
+
+interface submitError {
+    (options: object): any;
 }
 
 export interface FormProps {
@@ -18,10 +25,14 @@ export interface FormProps {
     action: string;
     method: string;
     ajax: boolean;
+    submitHandler: submitHandler;
+    submitSuccess: submitSuccess;
+    submitError: submitError;
 }
 
 export interface FormState {
     errors: any[];
+    processing: boolean;
 }
 
 interface DefaultProps {
@@ -60,6 +71,12 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
         action: PropTypes.string.isRequired,
         /** "submitLabel" - will be set as label of submit button */
         submitLabel: PropTypes.string,
+        /** "submitHandler" - handle form submit is required */
+        submitHandler: PropTypes.func.isRequired,
+        /** "submitSuccess" - handle success form submission */
+        submitSuccess: PropTypes.func,
+        /** "submitError" - handle error form submission */
+        submitError: PropTypes.func,
         /** children - all children between Form tags */
         children: PropTypes.arrayOf(PropTypes.element),
         /** "method" - to ba passes as form method (POST, GET). */
@@ -72,15 +89,18 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
         action: '/',
         method: 'POST',
         validateOn: ['submit'],
-        submitLabel: 'Submit'
+        submitLabel: 'Submit',
+        submitHandler: () => { throw new Error('Please provide submit handler'); }
     };
 
     state = {
+        processing: false,
         errors: [],
     };
 
     formState: object = {};
     validateOn = '';
+    submitCtaProps = {};
 
     constructor(props) {
         super(props);
@@ -89,10 +109,13 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
         this.populateFormState(filter(props.children, child => child.type === Field));
 
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
+        this.submitSuccess = this.submitSuccess.bind(this);
+        this.submitError = this.submitError.bind(this);
     }
 
     shouldComponentUpdate(nextProps, nextStates) {
-        return this.state.errors !== nextStates.errors;
+        return this.state.errors !== nextStates.errors
+            || this.state.processing !== nextStates.processing;
     }
 
     onFieldChangedHandler(event, fieldName) {
@@ -104,18 +127,24 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
     }
 
     onSubmitHandler(event) {
-        const { ajax } = this.props;
+        const { ajax, submitHandler } = this.props;
 
         event.preventDefault();
 
+        this.setProcessing(true);
+
         this.proofValidation('submit', () => {
             this.validateForm(errors => {
-                if (errors.length) return false;
+                if (errors.length) {
+                    this.setProcessing(false);
+                    return false;
+                }
 
-                formSubmit({
+                submitHandler({
                     ajax: Boolean(ajax),
                     formData: this.formState
-                });
+                }).then(this.submitSuccess, this.submitError)
+                .catch(this.submitError);
             });
         });
     }
@@ -139,6 +168,10 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
             submitLabel,
         } = this.props;
 
+        const {
+            processing
+        } = this.state;
+
         return (
             <form action={action} method={method} onSubmit={this.onSubmitHandler}>
                 {
@@ -148,7 +181,8 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
                         handleOnClick: this.onFieldClickedHandler.bind(this),
                     })
                 }
-                <button type="submit">{submitLabel}</button>
+
+                <button type="submit" disabled={processing}>{submitLabel}</button>
             </form>
         );
     }
@@ -159,6 +193,34 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
                 this.formState[child.props.name] = child.props.value;
             });
         }
+    }
+
+    private submitSuccess(payload) {
+        const {
+            submitSuccess
+        } = this.props;
+
+        this.setProcessing(false);
+
+        if (typeof submitSuccess === 'function') {
+            submitSuccess(payload);
+        }
+    }
+
+    private submitError(error) {
+        const {
+            submitError
+        } = this.props;
+
+        this.setProcessing(false);
+
+        if (typeof submitError === 'function') {
+            submitError(error);
+        }
+    }
+
+    private setProcessing(processing = false) {
+        this.setState({ processing });
     }
 
     private proofValidation(handleType, validate) {
