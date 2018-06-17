@@ -8,7 +8,7 @@
       "dom"
     ],
     "noImplicitAny": false,
-    "sourceMap": true,
+    "sourceMap": false,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "experimentalDecorators": true,
@@ -16,6 +16,6 @@
     "rootDir": "./src"
   },
   "exclude": [
-    "node_modules"
+    "node_modules", "src/__tests__"
   ]
 }

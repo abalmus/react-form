@@ -5,7 +5,8 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "scripts": {
-        "prepublish": "npm run test && tsc",
+        "prepublish": "npm run clean && npm run test && tsc",
+        "clean": "rimraf lib",
         "styleguide": "./node_modules/react-styleguidist/bin/styleguidist.js build",
         "test": "NODE_ENV=development nyc ./node_modules/mocha/bin/mocha -r ts-node/register src/__tests__/**/*.{js,jsx,ts,tsx}"
     },
@@ -13,7 +14,7 @@
     "license": "MIT",
     "dependencies": {
         "@tacitknowledge/react-utils": "^1.0.3",
-        "@tacitknowledge/validator": "^1.2.5",
+        "@tacitknowledge/validator": "^1.4.0",
         "@types/react": "^16.0.31",
         "@types/react-dom": "^16.0.3",
         "lodash": "^4.17.4",

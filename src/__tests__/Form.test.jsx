@@ -60,7 +60,7 @@ describe('Form component', () => {
         const formFields = wrapper.findWhere(node => node.type() === Form.Field);
 
         expect(formFields).to.have.length(9);
-        expect(wrapper.contains(<button type="submit">{submitLabel}</button>)).to.equal(true);
+        expect(wrapper.contains(<button type="submit" disabled={false}>{submitLabel}</button>)).to.equal(true);
         expect(wrapper.find('[name="title"]').shallow().find('#title > option')).to.have.length(4);
         expect(wrapper.find('[name="mobileCountryCode"]').shallow().find('#mobileCountryCode > option')).to.have.length(4);
         expect(wrapper.find('[name="countryIso"]').shallow().find('#countryIso > option')).to.have.length(2);
