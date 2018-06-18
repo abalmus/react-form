@@ -1,6 +1,6 @@
 {
     "name": "@tacitknowledge/react-form",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "From - Reusable React component, which includes fast and modern Validation Processor and a set of form fields.",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -13,8 +13,8 @@
     "author": "Andrei Balmus <abalmush@gmail.com> (http://abalmus.com)",
     "license": "MIT",
     "dependencies": {
-        "@tacitknowledge/react-utils": "^1.0.3",
-        "@tacitknowledge/validator": "^1.4.0",
+        "@tacitknowledge/react-utils": "^1.0.5",
+        "@tacitknowledge/validator": "^1.4.1",
         "@types/react": "^16.0.31",
         "@types/react-dom": "^16.0.3",
         "lodash": "^4.17.4",
