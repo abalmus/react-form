@@ -106,7 +106,7 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
         super(props);
 
         this.validateOn = props.validateOn;
-        this.populateFormState(filter(props.children, child => child.type === Field));
+        this.populateFormState(filter([].slice.call(props.children), child => child.type === Field));
 
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
         this.submitSuccess = this.submitSuccess.bind(this);
