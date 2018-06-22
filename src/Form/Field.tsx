@@ -11,6 +11,7 @@ const elements = {
     submit: Input,
     tel: Input,
     text: Input,
+    password: Input,
     textarea: TextArea,
 };
 
