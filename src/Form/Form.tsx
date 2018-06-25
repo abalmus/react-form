@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { keys, first, isEmpty, map, forIn, filter } from 'lodash';
+import { keys, first, isEmpty, map, forIn, filter, pickBy } from 'lodash';
 import { PropTypes } from 'prop-types';
 import { Field } from './Field';
+import { Submit } from './Submit';
 import { ValidationProcessor  } from '@tacitknowledge/validator';
 import { ValidationDecorator } from './ValidationDecorator';
 import { Children } from '@tacitknowledge/react-utils';
@@ -33,6 +34,7 @@ export interface FormProps {
 export interface FormState {
     errors: any[];
     processing: boolean;
+    formValid: boolean;
 }
 
 interface DefaultProps {
@@ -63,8 +65,10 @@ export interface IForm {
 export class Form extends React.Component <FormProps & DefaultProps, FormState> implements IForm {
     validateField?(fieldName: string, value: any): void;
     validateForm?(cb: Function): void;
+    validateFormSilently?(cb: Function): void;
 
     static Field = Field;
+    static Submit = Submit;
 
     static propTypes = {
         /** "action" - to ba passes as form action. */
@@ -96,6 +100,7 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
     state = {
         processing: false,
         errors: [],
+        formValid: false
     };
 
     formState: object = {};
@@ -124,6 +129,12 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
         this.proofValidation('change', () => {
             this.validateField(fieldName, event.target.value);
         });
+
+        this.validateFormSilently((errors) => {
+            this.setState({
+                formValid: isEmpty(pickBy(errors, (error) => !isEmpty(error)))
+            })
+        })
     }
 
     onSubmitHandler(event) {
@@ -168,10 +179,6 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
             submitLabel,
         } = this.props;
 
-        const {
-            processing
-        } = this.state;
-
         return (
             <form action={action} method={method} onSubmit={this.onSubmitHandler}>
                 {
@@ -181,8 +188,6 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
                         handleOnClick: this.onFieldClickedHandler.bind(this),
                     })
                 }
-
-                <button type="submit" disabled={processing}>{submitLabel}</button>
             </form>
         );
     }
@@ -243,18 +248,26 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
 
         const {
             errors,
+            formValid,
+            processing
         } = formState;
 
         return Children.deepMap(formProps.children, child => {
-            if (child.type === Field) {
-                return React.cloneElement(child as React.ReactElement<any>, {
-                    errors: this.extractErrors(errors, child),
-                    handleOnBlur,
-                    handleOnChange,
-                    handleOnClick,
-                });
-            } else {
-                return child;
+            switch(child.type) {
+                case Field:
+                    return React.cloneElement(child as React.ReactElement<any>, {
+                        errors: this.extractErrors(errors, child),
+                        handleOnBlur,
+                        handleOnChange,
+                        handleOnClick,
+                    });
+                case Submit:
+                    return React.cloneElement(child as React.ReactElement<any>, {
+                        disableCondition: !formValid,
+                        processing
+                    });
+                default:
+                    return child;
             }
         });
     }
