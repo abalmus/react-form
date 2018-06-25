@@ -88,7 +88,7 @@ function adaptStringValue(options: string): Select.Option[] {
 
 function adaptArrayValue(options: any[]): Select.Option[] {
     return map(options, option => {
-        return (isString(option) ? adaptStringValue(option) : option);
+        return (isString(option) ? adaptStringValue(option)[0] : adaptObjectValue(option));
     });
 }
 
