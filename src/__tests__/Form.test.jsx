@@ -55,12 +55,11 @@ describe('Form component', () => {
 
     it('should render all form fields and submit button', () => {
         const submitLabel = 'Submit Form';
-        const wrapper = shallow(<FormComponent submitLabel={submitLabel} ajax />).shallow();
+        const wrapper = shallow(<FormComponent ajax />).shallow();
 
         const formFields = wrapper.findWhere(node => node.type() === Form.Field);
 
         expect(formFields).to.have.length(9);
-        expect(wrapper.contains(<button type="submit" disabled={false}>{submitLabel}</button>)).to.equal(true);
         expect(wrapper.find('[name="title"]').shallow().find('#title > option')).to.have.length(4);
         expect(wrapper.find('[name="mobileCountryCode"]').shallow().find('#mobileCountryCode > option')).to.have.length(4);
         expect(wrapper.find('[name="countryIso"]').shallow().find('#countryIso > option')).to.have.length(2);
@@ -87,7 +86,7 @@ describe('Form component', () => {
         const validateField = sandbox.spy(Form.prototype, 'validateField');
 
         wrapper.find('[name="lastName"]').shallow().find('input').simulate('change', {target: {value: ''}, persist});
-        expect(validateField.calledOnce).to.equal(true);
+        expect(validateField.callCount).to.equal(10);
     });
 
     it('should attach "click" validation hook', () => {
@@ -132,7 +131,7 @@ describe('Form component', () => {
         wrapper.find('[name="lastName"]').shallow().find('input').simulate('change', {target: {value: ''}, persist});
 
         expect(validateForm.callCount).to.equal(0);
-        expect(validateField.callCount).to.equal(1);
+        expect(validateField.callCount).to.equal(10);
     });
 
     it('should call proper handlers', () => {

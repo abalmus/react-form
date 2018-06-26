@@ -1,7 +1,19 @@
 {
     "name": "@tacitknowledge/react-form",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "From - Reusable React component, which includes fast and modern Validation Processor and a set of form fields.",
+    "keywords": [
+        "react form",
+        "react",
+        "form",
+        "validator",
+        "simple validator",
+        "form validate"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/abalmus/react-form.git"
+    },
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "scripts": {
@@ -14,7 +26,7 @@
     "license": "MIT",
     "dependencies": {
         "@tacitknowledge/react-utils": "^1.0.5",
-        "@tacitknowledge/validator": "^1.4.1",
+        "@tacitknowledge/validator": "^1.4.2",
         "@types/react": "^16.0.31",
         "@types/react-dom": "^16.0.3",
         "lodash": "^4.17.4",
