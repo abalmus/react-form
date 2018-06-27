@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import { normalizeErrors } from '../Form/utils/errors';
 
+import 'mocha';
+
 const errorsSet = [
     {
         field1: [
