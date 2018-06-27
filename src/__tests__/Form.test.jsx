@@ -38,6 +38,8 @@ const FormComponent = props => {
             <Form.Field type="select" options="GB,DE" value="GB" name="countryIso" label="Country" placeholder="" />
             <Form.Field type="text" name="townCity" label="City" placeholder="" />
             <Form.Field type="text" name="postcode" label="Postcode" placeholder="Insert postcode" />
+
+            <Form.Submit label="Submit" />
         </Form>
     )
 };
@@ -69,6 +71,7 @@ describe('Form component', () => {
         expect(wrapper.find('[name="line1"]').shallow().find('input')).to.have.length(1);
         expect(wrapper.find('[name="townCity"]').shallow().find('input')).to.have.length(1);
         expect(wrapper.find('[name="postcode"]').shallow().find('input')).to.have.length(1);
+        expect(wrapper.render().find('[type="submit"]')).to.have.length(1);
     });
 
     it('should set initial values', () => {
