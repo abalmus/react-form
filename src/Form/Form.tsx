@@ -3,6 +3,8 @@ import { keys, first, isEmpty, map, forIn, filter, pickBy } from 'lodash';
 import { PropTypes } from 'prop-types';
 import { Field } from './Field';
 import { Submit } from './Submit';
+import { Behavior } from './Behavior';
+import { Group } from './Group';
 import { ValidationProcessor  } from '@tacitknowledge/validator';
 import { ValidationDecorator } from './ValidationDecorator';
 import { Children } from '@tacitknowledge/react-utils';
@@ -69,6 +71,8 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
 
     static Field = Field;
     static Submit = Submit;
+    static Behavior = Behavior;
+    static Group = Group;
 
     static propTypes = {
         /** "action" - to ba passes as form action. */
@@ -176,7 +180,6 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
         const {
             action,
             method,
-            submitLabel,
         } = this.props;
 
         return (
@@ -265,6 +268,18 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
                     return React.cloneElement(child as React.ReactElement<any>, {
                         disableCondition: !formValid,
                         processing
+                    });
+                case Behavior:
+                    return React.cloneElement(child as React.ReactElement<any>, {
+                        processing,
+                        formValid,
+                        formState: this.formState
+                    });
+                case Group:
+                    return React.cloneElement(child as React.ReactElement<any>, {
+                        processing,
+                        formValid,
+                        formState: this.formState
                     });
                 default:
                     return child;

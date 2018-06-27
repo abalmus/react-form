@@ -1,5 +1,8 @@
 import { expect } from 'chai';
 import { normalizeErrors } from '../Form/utils/errors';
+import { behaviorDetector } from '../Form/utils/behaviors';
+
+import 'mocha';
 
 const errorsSet = [
     {
@@ -26,4 +29,24 @@ describe('React utils', () => {
 
         expect(normalizedErrors.length).to.equals(2);
     });
-})
+
+    it('should return available behaviors', () => {
+        expect(behaviorDetector({
+            hideIf: 'name',
+            equals: 'me',
+            formState: { name: 'me' },
+        })).deep.equals({ hideIf: true });
+
+        expect(behaviorDetector({
+            hideIf: 'name',
+            equals: 'me',
+            formState: { name: 'not me' },
+        })).deep.equals({ hideIf: false });
+
+        expect(behaviorDetector({
+            hideIf: 'name',
+            oneOf: ['dude', 'me', 'buddy'],
+            formState: { name: 'me' },
+        })).deep.equals({ hideIf: true });
+    });
+});

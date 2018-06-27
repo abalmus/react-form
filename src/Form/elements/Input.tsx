@@ -12,6 +12,7 @@ export interface InputProps {
     placeholder: string;
     type: string;
     value: string;
+    disabled: boolean;
 }
 
 export const Input: React.StatelessComponent<InputProps> = (props) => {
@@ -30,6 +31,7 @@ export const Input: React.StatelessComponent<InputProps> = (props) => {
         placeholder,
         type,
         value,
+        disabled
     } = props;
 
     return (
@@ -42,7 +44,7 @@ export const Input: React.StatelessComponent<InputProps> = (props) => {
                     onBlur={handleOnBlur}
                     name={name}
                     value={value}
-                    placeholder={placeholder} />
+                    placeholder={placeholder} disabled={disabled}/>
             </label>
         </div>
     );

@@ -18,6 +18,7 @@ export const Select = (props) => {
         handleOnBlur,
         options,
         value,
+        disabled,
     } = props;
 
     const classList = [
@@ -35,7 +36,7 @@ export const Select = (props) => {
                 onClick={handleOnClick}
                 onChange={handleOnChange}
                 onBlur={handleOnBlur}
-                value={value}>
+                value={value} disabled={disabled}>
 
                 { defaultOption }
 
