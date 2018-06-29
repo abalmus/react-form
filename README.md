@@ -93,7 +93,6 @@ const LoginForm = props => {
   );
 };
 ```
-Demo:
 [![Edit React Form - Login](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/3qkjnm78mq)
 
 
@@ -159,5 +158,4 @@ const LoginForm = props => {
 };
 ```
 
-Demo:
 [![Edit Form Behavior - Login](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/jv614v7313)
