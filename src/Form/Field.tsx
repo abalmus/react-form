@@ -101,7 +101,7 @@ export class Field extends React.Component<FormField.Props, FormField.State> {
         });
 
         return (
-            <ErrorContainer errors={errors}>{component}</ErrorContainer>
+            <ErrorContainer errors={ errors }>{ component }</ErrorContainer>
         );
     }
 }

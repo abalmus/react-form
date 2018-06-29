@@ -27,7 +27,6 @@ export interface FormProps {
     children: any;
     action: string;
     method: string;
-    ajax: boolean;
     submitHandler: submitHandler;
     submitSuccess: submitSuccess;
     submitError: submitError;
@@ -77,8 +76,6 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
     static propTypes = {
         /** "action" - to ba passes as form action. */
         action: PropTypes.string.isRequired,
-        /** "submitLabel" - will be set as label of submit button */
-        submitLabel: PropTypes.string,
         /** "submitHandler" - handle form submit is required */
         submitHandler: PropTypes.func.isRequired,
         /** "submitSuccess" - handle success form submission */
@@ -142,7 +139,7 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
     }
 
     onSubmitHandler(event) {
-        const { ajax, submitHandler } = this.props;
+        const { submitHandler } = this.props;
 
         event.preventDefault();
 
@@ -155,11 +152,16 @@ export class Form extends React.Component <FormProps & DefaultProps, FormState> 
                     return false;
                 }
 
-                submitHandler({
-                    ajax: Boolean(ajax),
-                    formData: this.formState
-                }).then(this.submitSuccess, this.submitError)
-                .catch(this.submitError);
+                const submitPromise = submitHandler({
+                    formData: this.formState,
+                    submitSuccess: this.submitSuccess,
+                    submitError: this.submitError
+                })
+
+                if (submitPromise.then && typeof submitPromise.then === 'function') {
+                    submitPromise.then(this.submitSuccess, this.submitError)
+                    .catch(this.submitError);
+                }
             });
         });
     }
