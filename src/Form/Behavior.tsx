@@ -5,9 +5,9 @@ import * as behaviors from './utils/behaviors';
 export namespace FormSubmit {
     export interface Props {
         children: React.ReactChild;
-        hideIf?: string;
-        showIf?: string;
-        disableIf?: string;
+        hideIf?: any;
+        showIf?: any;
+        disableIf?: any;
         classIf?: string;
         equals?: string;
         oneOf?: string[];

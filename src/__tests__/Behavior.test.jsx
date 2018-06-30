@@ -30,9 +30,12 @@ const FormComponent = props => {
             {...props}
         >
             <Form.Field type="select" options="mr,mrs,miss" value="mr" name="title" label="Title" placeholder="Select title" />
-            <Form.Field type="text" name="firstName" label="First Name" placeholder="" value="Andrei" />
 
-            <Form.Behavior disableIf="title" equals="mrs" >
+            <Form.Behavior hideIf={formState => formState.title === 'mrs'}>
+                <Form.Field type="text" name="firstName" label="First Name" placeholder="" value="Andrei" />
+            </Form.Behavior>
+
+            <Form.Behavior disableIf="title" equals="mrs">
                 <Form.Field type="text" name="lastName" label="Last Name" placeholder="" value="Balmus" />
             </Form.Behavior>
 
@@ -109,11 +112,9 @@ describe('Form Behavior component', () => {
     it('should disable field based on disabled behavior', () => {
         const wrapper = shallow(<FormComponent validateOn={['change']} />).shallow();
         const persist = sandbox.spy();
-        const validateField = sandbox.spy(Form.prototype, 'validateField');
 
         wrapper.find('[name="title"]').shallow().find('select').simulate('change', {target: {value: 'mrs'}, persist});
 
-        expect(wrapper.render().find('[name="lastName"]')).to.have.length(1);
-        expect(wrapper.render().find('[name="lastName"]').is('[disabled]')).to.equals(true);
+        expect(wrapper.render().find('[name="firstName"]')).to.have.length(0);
     });
 });

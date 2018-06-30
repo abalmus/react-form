@@ -49,4 +49,21 @@ describe('React utils', () => {
             formState: { name: 'me' },
         })).deep.equals({ hideIf: true });
     });
+
+    it('should accept function instead string', () => {
+        expect(behaviorDetector({
+            hideIf: (formState) => formState.name ==='me',
+            formState: { name: 'me' },
+        })).deep.equals({ hideIf: true });
+
+        expect(behaviorDetector({
+            showIf: (formState) => formState.name ==='foo',
+            formState: { name: 'me' },
+        })).deep.equals({ showIf: false });
+
+        expect(behaviorDetector({
+            disableIf: (formState) => formState.name ==='foo',
+            formState: { name: 'foo' },
+        })).deep.equals({ disableIf: true });
+    });
 });
