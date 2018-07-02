@@ -29,10 +29,13 @@ const FormComponent = props => {
             method="POST"
             {...props}
         >
-            <Form.Field type="select" options="mr,mrs,miss" value="mr" name="title" label="Title" placeholder="Select title" />
-            <Form.Field type="text" name="firstName" label="First Name" placeholder="" value="Andrei" />
+            <Form.Field type="select" options="mr,mrs,miss,fraud" value="mr" name="title" label="Title" placeholder="Select title" />
 
-            <Form.Behavior disableIf="title" equals="mrs" >
+            <Form.Behavior hideIf={formState => formState.title === 'mrs'}>
+                <Form.Field type="text" name="firstName" label="First Name" placeholder="" value="Andrei" />
+            </Form.Behavior>
+
+            <Form.Behavior disableIf="title" equals="mrs">
                 <Form.Field type="text" name="lastName" label="Last Name" placeholder="" value="Balmus" />
             </Form.Behavior>
 
@@ -54,6 +57,14 @@ const FormComponent = props => {
 
             <Form.Behavior showIf="title" equals={'miss'} >
                 <Form.Field type="text" name="postcode" label="Postcode" placeholder="Insert postcode" />
+            </Form.Behavior>
+
+            <Form.Behavior showIf={formState => formState.title === 'fraud'}>
+                <Form.Field type="text" name="field1" label="Field" />
+            </Form.Behavior>
+
+            <Form.Behavior hideIf={formState => formState.title === 'fraud'}>
+                <Form.Field type="text" name="field2" label="Field" />
             </Form.Behavior>
         </Form>
     )
@@ -83,6 +94,8 @@ describe('Form Behavior component', () => {
         expect(wrapper.render().find('[name="cellPhone"]')).to.have.length(0);
         expect(wrapper.render().find('[name="townCity"]')).to.have.length(1);
         expect(wrapper.render().find('[name="postcode"]')).to.have.length(0);
+        expect(wrapper.render().find('[name="field1"]')).to.have.length(0);
+        expect(wrapper.render().find('[name="field2"]')).to.have.length(1);
     });
 
     it('should show or hide fields based on behavior', () => {
@@ -109,11 +122,20 @@ describe('Form Behavior component', () => {
     it('should disable field based on disabled behavior', () => {
         const wrapper = shallow(<FormComponent validateOn={['change']} />).shallow();
         const persist = sandbox.spy();
-        const validateField = sandbox.spy(Form.prototype, 'validateField');
 
         wrapper.find('[name="title"]').shallow().find('select').simulate('change', {target: {value: 'mrs'}, persist});
 
-        expect(wrapper.render().find('[name="lastName"]')).to.have.length(1);
+        expect(wrapper.render().find('[name="firstName"]')).to.have.length(0);
         expect(wrapper.render().find('[name="lastName"]').is('[disabled]')).to.equals(true);
+    });
+
+    it('should trigger visibility behavior of the field - as a function', () => {
+        const wrapper = shallow(<FormComponent validateOn={['change']} />).shallow();
+        const persist = sandbox.spy();
+
+        wrapper.find('[name="title"]').shallow().find('select').simulate('change', {target: {value: 'fraud'}, persist});
+
+        expect(wrapper.render().find('[name="field1"]')).to.have.length(1);
+        expect(wrapper.render().find('[name="field2"]')).to.have.length(0);
     });
 });

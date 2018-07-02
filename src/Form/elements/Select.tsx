@@ -19,6 +19,7 @@ export const Select = (props) => {
         options,
         value,
         disabled,
+        type,
     } = props;
 
     const classList = [
@@ -29,7 +30,7 @@ export const Select = (props) => {
 
     const defaultOption = getDefaultOption(placeholder) || '';
 
-    return <div className={classList.join(' ')}>
+    return <div className={`${type}-field ${classList.join(' ')}`}>
         <label> {label}
             <select id={name}
                 name={name}

@@ -35,7 +35,7 @@ export const Input: React.StatelessComponent<InputProps> = (props) => {
     } = props;
 
     return (
-        <div className={classList.join(' ')}>
+        <div className={`${type}-field ${classList.join(' ')}`}>
             <label>
                 <span>{label}</span>
                 <input type={type}
