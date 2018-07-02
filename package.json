@@ -1,6 +1,6 @@
 {
     "name": "@tacitknowledge/react-form",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "From - Reusable React component, which includes fast and modern Validation Processor and a set of form fields.",
     "keywords": [
         "react form",
